@@ -1,29 +1,28 @@
 const { ObjectId } = require('mongoose').Types;
 const { Thought, User } = require('../models');
 
-// Aggregate function to get the number of thoughts overall
-const thoughtCount = async () =>
-  Thought.aggregate()
-    .count('thoughtCount')
-    .then((numberOfThoughts) => numberOfThoughts);
+// // Aggregate function to get the number of thoughts overall
+// const thoughtCount = async () =>
+//   Thought.aggregate()
+//     .count('thoughtCount')
+//     .then((numberOfThoughts) => numberOfThoughts);
 
-// Aggregate function for getting the overall grade using $avg
-const reactionCount = async (thoughtId) =>
-  Thought.aggregate([
-    // only include the given thought by using $match
-    { $match: { _id: ObjectId(thoughtId) } },
-    {
-      $unwind: '$reactions',
-    },
-    {
-      $group: {
-        _id: ObjectId(studentId),
-        overallGrade: { $avg: '$assignments.score' },
-      },
-    },
-  ])
-    .count('reactionCount')-p0wes
-    .then((numberOfReactions) => numberOfReactions);
+// // Aggregate function for getting the overall grade using $avg
+// const reactionCount = async (thoughtId) =>
+//   Thought.aggregate([
+//     // only include the given thought by using $match
+//     { $match: { _id: ObjectId(thoughtId) } },
+//     {
+//       $unwind: '$reaction',
+//     },
+//     {
+//       $group: {
+//         _id: ObjectId(thoughtId),
+//       },
+//     },
+//   ])
+//     .count('reactionCount')
+//     .then((numberOfReactions) => numberOfReactions);
 
 
 module.exports = {
@@ -34,6 +33,7 @@ module.exports = {
         const thoughtObj = {
           thoughts,
           thoughtCount: await thoughtCount(),
+          reactionCount: await reactionCount(),
         };
         return res.json(thoughtObj);
       })
@@ -51,7 +51,7 @@ module.exports = {
           ? res.status(404).json({ message: 'No thought with that ID' })
           : res.json({
             thought,
-              reactions: await reactions(req.params.thoughtId),
+            reactions: await reactions(req.params.thoughtId),
             })
       )
       .catch((err) => {
@@ -96,7 +96,9 @@ module.exports = {
     console.log(req.body);
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $addToSet: { reaction: req.body } },
+      { $addToSet: { 
+        reaction: req.body,
+       } },
       { runValidators: true, new: true }
     )
       .then((thought) =>

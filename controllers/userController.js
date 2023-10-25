@@ -20,6 +20,7 @@ module.exports = {
   },
   // Create a user
   createUser(req, res) {
+    console.log(req.body);
     User.create(req.body)
       .then((user) => res.json(user))
       .catch((err) => {
@@ -52,4 +53,36 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+
+// Create a friend
+addFriend(req, res) {
+  console.log('You are adding a new friend');
+  console.log(req.params.userId);
+  User.findOneAndUpdate(
+    { _id: req.params.userId },
+    { $addToSet: { 
+      friends: req.params.friendId,
+     } },
+    { runValidators: true, new: true }
+  )
+    .then((user) =>
+      !user
+        ? res
+            .status(404)
+            .json({ message: 'No user found with that ID :(' })
+        : res.json(user)
+    )
+    .catch((err) => res.status(500).json(err));
+  },
+// Delete a friend
+deleteFriend(req, res) {
+  User.findOneAndDelete({ _id: req.params.userId })
+    .then((user) =>
+      !user
+        ? res.status(404).json({ message: 'No user with that ID' })
+        : Thought.deleteMany({ _id: { $in: user.thoughts } })
+    )
+    .then(() => res.json({ message: 'User and thoughts deleted!' }))
+    .catch((err) => res.status(500).json(err));
+}
 };
