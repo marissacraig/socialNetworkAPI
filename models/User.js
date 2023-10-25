@@ -3,16 +3,15 @@ const { Schema, model } = require('mongoose');
 // Schema to create a user model
 const userSchema = new Schema(
   {
-    userName: {
+    username: {
       type: String,
       unique: true,
       required: true,
       trim: true,
     },
     email: {
-      email: {
         type: String,
-        required: [true, 'Please enter Email Address'],
+        required: [false, 'Please enter Email Address'],
         unique: true,
         lowercase: true,
         validate: {
@@ -22,8 +21,13 @@ const userSchema = new Schema(
           message: 'Please enter a valid email address.'
         },
     },
-  },
-    users: [
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Thought',
+      },
+    ],
+    friends: [
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -39,6 +43,14 @@ const userSchema = new Schema(
   
 );
 
-const User = model('user', userSchema);
+userSchema.virtual("thoughtCount").get(function() {
+  return this.thoughts.length;
+});
+
+userSchema.virtual("friendCount").get(function() {
+  return this.friends.length;
+});
+
+const User = model('User', userSchema);
 
 module.exports = User;
