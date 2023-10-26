@@ -24,7 +24,21 @@ None. This is a school assignment.
 This application was tested on Insomnia and passed all tests.
 
 ## Visuals
-![Walk-through-video](./Assets/Social%20Network%20API.mp4)
+This shows the user GET, POST, PUT, DELETE routes
+
+https://github.com/marissacraig/socialNetworkAPI/assets/135668035/a08ffe33-ab27-4bfc-80b8-5ee1c7d3f3c9
+
+This shows the thought GET, POST routes
+
+https://github.com/marissacraig/socialNetworkAPI/assets/135668035/46efd16f-1f91-41e2-b484-e1462eebbdbb
+
+This shows the reaction POST route
+
+https://github.com/marissacraig/socialNetworkAPI/assets/135668035/8a62ba09-5490-42c0-be9e-5007224d85ef
+
+This shows the thought and reaction DELETE routes
+
+https://github.com/marissacraig/socialNetworkAPI/assets/135668035/feee33f8-067f-42f8-8f3d-23bfffe14995
 
 ## Questions
 Links to my email, GitHub, and LinkedIn have been included for any questions regarding my app. 
