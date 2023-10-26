@@ -76,9 +76,12 @@ addFriend(req, res) {
   },
   // Remove friend from a user
   removeFriend(req, res) {
+    console.log("friend removed")
+    console.log(req.params.userId)
+    console.log(req.params.friendId)
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $pull: { friend: { friendId: req.params.friendId } } },
+      { $pull: { friends:  req.params.friendId  } },
       { runValidators: true, new: true }
     )
       .then((user) =>
