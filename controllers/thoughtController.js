@@ -1,39 +1,13 @@
 const { ObjectId } = require('mongoose').Types;
 const { Thought, User } = require('../models');
 
-// // Aggregate function to get the number of thoughts overall
-// const thoughtCount = async () =>
-//   Thought.aggregate()
-//     .count('thoughtCount')
-//     .then((numberOfThoughts) => numberOfThoughts);
-
-// // Aggregate function for getting the overall grade using $avg
-// const reactionCount = async (thoughtId) =>
-//   Thought.aggregate([
-//     // only include the given thought by using $match
-//     { $match: { _id: ObjectId(thoughtId) } },
-//     {
-//       $unwind: '$reaction',
-//     },
-//     {
-//       $group: {
-//         _id: ObjectId(thoughtId),
-//       },
-//     },
-//   ])
-//     .count('reactionCount')
-//     .then((numberOfReactions) => numberOfReactions);
-
-
 module.exports = {
   // Get all thoughts
   getThoughts(req, res) {
     Thought.find()
       .then(async (thoughts) => {
         const thoughtObj = {
-          thoughts,
-          thoughtCount: await thoughtCount(),
-          reactionCount: await reactionCount(),
+          thoughts
         };
         return res.json(thoughtObj);
       })
@@ -96,9 +70,8 @@ module.exports = {
     console.log(req.body);
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $addToSet: { 
-        reaction: req.body,
-       } },
+      { $addToSet: { reactions: req.body } 
+      },
       { runValidators: true, new: true }
     )
       .then((thought) =>
@@ -114,7 +87,7 @@ module.exports = {
   removeReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $pull: { reaction: { reactionId: req.params.reactionId } } },
+      { $pull: { reactions: { _id: req.params.reactionId } } },
       { runValidators: true, new: true }
     )
       .then((thought) =>
