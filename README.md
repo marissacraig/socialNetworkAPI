@@ -24,7 +24,7 @@ None. This is a school assignment.
 This application was tested on Insomnia and passed all tests.
 
 ## Visuals
-![Walk-through-video](https://drive.google.com/file/d/1vkmHrOrGARHbGnq5sbfmXzm5gfWhp7Wr/preview)
+![Walk-through-video](./Assets/Social%20Network%20API.mp4)
 
 ## Questions
 Links to my email, GitHub, and LinkedIn have been included for any questions regarding my app. 
